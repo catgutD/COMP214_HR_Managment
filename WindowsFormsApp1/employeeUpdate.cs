@@ -17,6 +17,7 @@ namespace WindowsFormsApp1
         {
             InitializeComponent();
             LoadEmployees();
+            LoadJobIds();
         }
 
         private void LoadEmployees()
@@ -35,6 +36,21 @@ namespace WindowsFormsApp1
             dgvEmployee.Refresh();
         }
 
+        private void LoadJobIds()
+        {
+            OracleConnection con = new OracleConnection("User Id=COMP214_F22_ER_56;Password=password;Data Source=199.212.26.208:1521/SQLD");
+            con.Open();
+
+            OracleCommand cmd = new OracleCommand("SELECT job_id as a FROM hr_jobs", con);
+            OracleDataAdapter adapter = new OracleDataAdapter(cmd);
+            DataTable data = new DataTable();
+            adapter.Fill(data);
+
+            comboBox1.DataSource = data;
+            comboBox1.DisplayMember = "a";
+            comboBox1.ValueMember = "a";
+        }
+
         //declaring this outside so it can be passed to another method
         int employee_id;
 
@@ -43,6 +59,7 @@ namespace WindowsFormsApp1
             employee_id = int.Parse(dgvEmployee.Rows[e.RowIndex].Cells[0].Value.ToString());
             txtEmail.Text = dgvEmployee.Rows[e.RowIndex].Cells[3].Value.ToString();
             txtPhone.Text = dgvEmployee.Rows[e.RowIndex].Cells[4].Value.ToString();
+            comboBox1.SelectedIndex = comboBox1.FindStringExact(dgvEmployee.Rows[e.RowIndex].Cells[6].Value.ToString());
             txtSalary.Text = dgvEmployee.Rows[e.RowIndex].Cells[7].Value.ToString();
         }
 
@@ -52,6 +69,7 @@ namespace WindowsFormsApp1
             txtEmail.Clear();
             txtPhone.Clear();
             txtSalary.Clear();
+            comboBox1.SelectedIndex = -1;
         }
 
         private void btnUpdate_Click(object sender, EventArgs e)
@@ -66,15 +84,24 @@ namespace WindowsFormsApp1
             da.SelectCommand.Parameters.Add("p_salary", OracleDbType.Int32).Value = int.Parse(txtSalary.Text);
             da.SelectCommand.Parameters.Add("p_phone", OracleDbType.Varchar2).Value = txtPhone.Text;
             da.SelectCommand.Parameters.Add("p_email", OracleDbType.Varchar2).Value = txtEmail.Text;
+            da.SelectCommand.Parameters.Add("p_job_id", OracleDbType.Varchar2).Value = comboBox1.Text;
 
             DataTable dt = new DataTable();
 
-            da.Fill(dt);
-            MessageBox.Show("Employee updated successfully.");
-            dt.AcceptChanges();
+            try
+            {
+                da.Fill(dt);
+                MessageBox.Show("Employee updated successfully.");
+                dt.AcceptChanges();
 
-            LoadEmployees();
-            con.Close();
+                LoadEmployees();
+                con.Close();
+            }
+            catch (OracleException ex) when (ex.Message.Contains("ORA-20100"))
+            {
+                MessageBox.Show(ex.Message);
+            }
+
         }
     }
 }

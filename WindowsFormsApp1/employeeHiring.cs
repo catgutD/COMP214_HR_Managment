@@ -132,21 +132,32 @@ namespace WindowsFormsApp1
             da.SelectCommand.Parameters.Add("p_department_id", OracleDbType.Int32).Value = int.Parse(splitDepartment[0]);
 
             DataTable dt = new DataTable();
-            da.Fill(dt);
-            MessageBox.Show("Successfully Hired.");
-            dt.AcceptChanges();
 
-            con.Close();
+            try
+            {
 
-            txtFname.Clear();
-            txtLName.Clear();
-            txtSalary.Clear();
-            txtEmail.Clear();
-            txtPhone.Clear();
-            txtHireDate.Clear();
-            comboBox1.SelectedIndex = 0;
-            comboBox2.SelectedIndex = 0;
-            cmbManager.SelectedIndex = 0;
+                da.Fill(dt);
+                MessageBox.Show("Successfully Hired.");
+                dt.AcceptChanges();
+
+                con.Close();
+
+                txtFname.Clear();
+                txtLName.Clear();
+                txtSalary.Clear();
+                txtEmail.Clear();
+                txtPhone.Clear();
+                txtHireDate.Clear();
+                comboBox1.SelectedIndex = 0;
+                comboBox2.SelectedIndex = 0;
+                cmbManager.SelectedIndex = 0;
+
+            }
+            catch (OracleException ex) when (ex.Message.Contains("ORA-20100"))
+            {
+                MessageBox.Show(ex.Message); 
+            }
+
         }
     }
 }
