@@ -1,0 +1,14 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="WindowsFormsApp1.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="ConnectionString" Type="(Connection string)" Scope="Application">
+      <DesignTimeValue Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;SerializableConnectionString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;ConnectionString&gt;TNS_ADMIN=C:\Users\a\Oracle\network\admin;USER ID=COMP214_F22_ER_56;PASSWORD=password;DATA SOURCE=199.212.26.208:1521/SQLD&lt;/ConnectionString&gt;
+  &lt;ProviderName&gt;Oracle.ManagedDataAccess.Client&lt;/ProviderName&gt;
+&lt;/SerializableConnectionString&gt;</DesignTimeValue>
+      <Value Profile="(Default)">TNS_ADMIN=C:\Users\a\Oracle\network\admin;USER ID=COMP214_F22_ER_56;PASSWORD=password;DATA SOURCE=199.212.26.208:1521/SQLD</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
